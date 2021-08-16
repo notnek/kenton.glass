@@ -1,11 +1,11 @@
 <template>
   <main>
-    <template v-if="articles.length > 0">
+    <template v-if="articles">
       <h2>Recent articles</h2>
       <article-list class="mt-2" :articles="articles" />
     </template>
 
-    <template v-if="projects.length > 0">
+    <template v-if="projects">
       <h2 class="mt-8">
         Featured projects
       </h2>
@@ -21,7 +21,7 @@
       </ul>
     </template>
 
-    <template v-if="externalLinks.length > 0">
+    <template v-if="externalLinks">
       <h2 class="mt-8">
         Elsewhere
       </h2>
