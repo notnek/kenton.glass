@@ -1,30 +1,36 @@
 <template>
   <main>
-    <h2>Recent articles</h2>
-    <article-list class="mt-2" :articles="articles" />
+    <template v-if="articles.length > 0">
+      <h2>Recent articles</h2>
+      <article-list class="mt-2" :articles="articles" />
+    </template>
 
-    <h2 class="mt-8">
-      Featured projects
-    </h2>
-    <ul class="mt-2 space-y-3 list-disc list-inside">
-      <li v-for="project in projects" :key="project.url">
-        <a
-          :href="project.url"
-          rel="noopener"
-          target="_blank"
-          v-text="project.name"
-        />
-      </li>
-    </ul>
+    <template v-if="projects.length > 0">
+      <h2 class="mt-8">
+        Featured projects
+      </h2>
+      <ul class="mt-2 space-y-3 list-disc list-inside">
+        <li v-for="project in projects" :key="project.url">
+          <a
+            :href="project.url"
+            rel="noopener"
+            target="_blank"
+            v-text="project.name"
+          />
+        </li>
+      </ul>
+    </template>
 
-    <h2 class="mt-8">
-      Elsewhere
-    </h2>
-    <ul class="mt-2 space-y-3 list-disc list-inside">
-      <li v-for="link in externalLinks" :key="link.url">
-        <a :href="link.url" rel="noopener" target="_blank" v-text="link.name" />
-      </li>
-    </ul>
+    <template v-if="externalLinks.length > 0">
+      <h2 class="mt-8">
+        Elsewhere
+      </h2>
+      <ul class="mt-2 space-y-3 list-disc list-inside">
+        <li v-for="link in externalLinks" :key="link.url">
+          <a :href="link.url" rel="noopener" target="_blank" v-text="link.name" />
+        </li>
+      </ul>
+    </template>
   </main>
 </template>
 
