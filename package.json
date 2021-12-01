@@ -24,7 +24,7 @@
     "@nuxtjs/feed": "^2.0.0",
     "@nuxtjs/pwa": "^3.3.5",
     "@vue-a11y/announcer": "^2.1.0",
-    "date-fns": "^2.21.1",
+    "date-fns": "^2.27.0",
     "nuxt": "^2.15.7",
     "vue-lazy-hydration": "^2.0.0-beta.4"
   },
