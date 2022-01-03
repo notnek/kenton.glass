@@ -1,15 +1,13 @@
 <template>
   <main>
-    <h1 class="flex flex-col-reverse">
-      <nuxt-link
-        class="font-bold text-gray-900 dark:text-gray-100 hover:no-underline"
-        :to="article.path"
-        v-text="article.title"
-      />
+    <header class="flex flex-col-reverse">
+      <h1 class="font-bold text-gray-900 dark:text-gray-100 hover:no-underline">
+        {{ article.title }}
+      </h1>
       <div class="text-base font-normal text-gray-700 dark:text-gray-400">
         {{ article.createdAt | formatFullDate }}
       </div>
-    </h1>
+    </header>
 
     <NuxtContent :document="article" />
 
