@@ -40,7 +40,7 @@
               Articles
             </nuxt-link>
           </li>
-          <li><a href="https://twitter.com/notnek">Twitter</a></li>
+          <li><a rel="me" href="https://mastodon.social/@notnek">Mastodon</a></li>
         </ul>
       </nav>
     </div>
