@@ -11,6 +11,12 @@ skills:
   - Laravel
 projects:
   -
+    name: 'KY Proud'
+    url: 'https://www.kyproud.com'
+  -
+    name: 'Carriage House Printery'
+    url: 'https://www.carriagehouseprintery.com
+  -
     name: 'Drink KY (App)'
     url: 'https://app.drink-ky.com'
   -
