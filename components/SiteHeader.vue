@@ -40,7 +40,7 @@
               Articles
             </nuxt-link>
           </li>
-          <li><a rel="me" href="https://mastodon.social/@notnek">Mastodon</a></li>
+          <li><a rel="me" href="https://social.lol/@kenton">Mastodon</a></li>
         </ul>
       </nav>
     </div>
