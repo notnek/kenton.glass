@@ -35,9 +35,6 @@ projects:
     name: 'Legent Bourbon'
     url: 'https://www.legentbourbon.com'
   -
-    name: 'Maker''s Mark'
-    url: 'https://www.makersmark.com'
-  -
     name: 'Studio Calico'
     url: 'https://www.studiocalico.com'
 externalLinks:
