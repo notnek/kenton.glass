@@ -14,7 +14,7 @@ It's been a while since [I shared what I'm using](/articles/my-current-setup-202
 * Magic Trackpad
 * BenQ ScreenBar Halo
 * Uplift desk
-* Herman Millar Aeron chair
+* Herman Miller Aeron chair
 
 ## Apps
 * 1Password
