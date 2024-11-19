@@ -40,7 +40,7 @@
               Articles
             </nuxt-link>
           </li>
-          <li><a rel="me" href="https://social.lol/@kenton">Mastodon</a></li>
+          <li><a href="https://bsky.app/profile/kenton.glass">Bluesky</a></li>
         </ul>
       </nav>
     </div>
