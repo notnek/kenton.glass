@@ -11,6 +11,9 @@ skills:
   - Laravel
 projects:
   -
+    name: 'Paper Farm Press'
+    url: 'https://www.paperfarmpress.com'
+  -
     name: 'Doe-Anderson'
     url: 'https://www.doeanderson.com'
   -
@@ -31,9 +34,6 @@ projects:
   -
     name: 'Legent Bourbon'
     url: 'https://www.legentbourbon.com'
-  -
-    name: 'Studio Calico'
-    url: 'https://www.studiocalico.com'
 externalLinks:
   -
     name: GitHub
