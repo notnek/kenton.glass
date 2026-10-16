@@ -4,36 +4,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal site and blog for Kenton Glass, built with Nuxt 2 (`target: 'static'`), `@nuxt/content` v1, and Tailwind CSS v1/v2-era config. Uses Yarn (`yarn.lock`).
+Personal site and blog for Kenton Glass, built with Nuxt 4 (statically generated), `@nuxt/content` v3, `@nuxt/image`, and Tailwind CSS v4. Uses Yarn 1 (`yarn.lock`). Requires Node `^22.22.3 || >=24.15.0` (Nuxt's own engine range); `.nvmrc` pins 24.
 
 ## Commands
 
 ```bash
-yarn install
-yarn dev        # dev server with hot reload at localhost:3000
-yarn generate   # static build to dist/
-yarn lint:js    # eslint over .js/.vue
-yarn test       # jest (test/ currently has no tests)
-npx jest path/to/file.spec.js   # run a single test file
+yarn install    # also runs `nuxt prepare` (generates .nuxt/ types and ESLint config)
+yarn dev        # dev server at localhost:3000
+yarn generate   # static build to .output/public (dist/ is a symlink to it)
+yarn lint       # eslint (flat config from @nuxt/eslint)
+yarn typecheck  # vue-tsc via nuxt typecheck
 ```
 
-`yarn lint:style` / `yarn lint` reference stylelint, but stylelint is not installed or configured, so use `yarn lint:js` directly. ESLint also runs during dev/build via `@nuxtjs/eslint-module`.
+There is no test suite. TypeScript is pinned to v6 because typescript-eslint and vue-tsc don't support TS 7 yet.
 
 ## Architecture
 
-- **Content is the data layer.** Articles are Markdown files in `content/articles/` with `title` and `createdAt` (format `YYYY/MM/DD`) frontmatter; optional `description` is used for meta tags. The filename is the slug (`/articles/<filename>`). Pages fetch them via `$content('articles')` in `asyncData`, sorted by `createdAt` desc.
-- **Drafts** go in `content/articles/_drafts/`. `$content('articles')` is not called with `deep: true`, so subdirectories are excluded from listings, the article route, and feeds.
-- **Homepage data** (skills, featured projects, "Elsewhere" links) lives in `content/stats.yaml`, loaded with `$content('stats')`. Edit that file rather than `pages/index.vue` to change those lists.
-- **Feeds**: RSS (`/articles/rss.xml`) and JSON Feed (`/articles/feed.json`) are generated in `nuxt.config.js` via `@nuxtjs/feed`, rendering article text with `marked` and truncating summaries to ~180 chars.
-- **Date formatting** is done with global Vue filters `formatFullDate` and `formatYear` (`plugins/filters.js`, date-fns).
-- **Per-page SEO**: each page's `head()` overrides `description`, `og:*`, and `twitter:*` meta using the same `hid` values as the defaults in `nuxt.config.js`; keep `hid`s consistent so tags replace rather than duplicate.
-- **Styling**: Tailwind utilities in templates plus custom styles (including article prose) in `assets/css/tailwind.css`. Dark mode is a custom `dark` screen using `prefers-color-scheme` (`dark:` prefix in classes, `@screen dark` in CSS), not Tailwind's built-in dark mode. Purge is enabled only in production, scanning components/layouts/pages/plugins.
-- Components in `components/` are auto-registered (`components: true`); `Lazy` prefix gives lazy loading.
+Nuxt 4 layout: app code is in `app/`, Nitro server code in `server/`, Markdown/YAML in `content/`, static files in `public/`.
+
+- **Content collections** are defined in `content.config.ts`:
+  - `articles`: `content/articles/*.md` with `title` and `createdAt` (string `YYYY/MM/DD`, which sorts correctly as text) frontmatter, plus an optional `description`. The filename is the slug (`/articles/<filename>`). If `description` is missing, Content v3 fills it in from the first paragraph.
+  - `stats`: `content/stats.yaml`, the homepage's projects and "Elsewhere" links. Edit this file, not `app/pages/index.vue`, to change those lists.
+  - **Drafts** go in `content/articles/_drafts/`. The source glob is non-recursive, so drafts never reach pages or feeds.
+- **Querying**: pages use `queryCollection(...)` inside `useAsyncData`. Server code must import `queryCollection` from `@nuxt/content/server` and pass the `event`.
+- **Feeds**: `server/routes/articles/rss.xml.ts` and `feed.json.ts` build feeds with the `feed` package (shared logic in `server/utils/feed.ts`). They render each article's `rawbody` with `marked` and are prerendered via `nitro.prerender.routes` in `nuxt.config.ts`.
+- **Code blocks**: Shiki highlighting with `github-light`/`github-dark` themes. `app/components/content/ProsePre.vue` overrides Content's default so that ```` ```lang[filename] ```` fences display the filename.
+- **Dates**: format them with `formatFullDate` / `formatYear` from `app/utils/date.ts` (auto-imported).
+- **Head/SEO**: global defaults and the `<body>` classes are in `app.head` in `nuxt.config.ts`; pages override with `useSeoMeta`. Body classes live in the config rather than `app.vue` because `error.vue` replaces `app.vue` entirely. For that reason `main.css` has an `@source` pointing at `nuxt.config.ts`, so Tailwind generates those classes.
+- **Styling**: `app/assets/css/main.css`. Dark mode is Tailwind v4's default `dark:` variant (`prefers-color-scheme`). Custom element and prose styles must stay inside `@layer base`/`@layer components`; unlayered CSS would override utility classes in v4.
+- `app/error.vue` wraps itself in `<NuxtLayout>` so error pages keep the site header. The header is lazily hydrated (`<LazySiteHeader hydrate-on-idle />`).
 
 ## Deployment
 
-The site is deployed on Netlify (build settings live in the Netlify UI; there is no `netlify.toml`). `static/_headers` (long-lived cache headers for `/_nuxt/*`) and `static/_redirects` (e.g. `/uses` → the latest setup article) are Netlify config files copied into `dist/` at generate time.
+Netlify builds and hosts the site. Build settings are in the Netlify UI, since there's no `netlify.toml`. `public/_headers` (long-lived cache headers for `/_nuxt/*`) and `public/_redirects` (e.g. `/uses` → the latest setup article) are Netlify config files copied into the build output.
 
 ## Code style
 
-ESLint extends `@nuxtjs` + `plugin:nuxt/recommended`, with required semicolons, always-multiline trailing commas, and no space before named function parens (`function foo()`), but a space for anonymous/async arrow ones.
+The ESLint stylistic config (in `nuxt.config.ts` → `eslint.config`) requires semicolons, single quotes, and always-multiline trailing commas. `eslint.config.mjs` adds `space-before-function-paren` (no space for named functions, a space for anonymous functions and async arrows). `yarn lint --fix` resolves most formatting issues.
