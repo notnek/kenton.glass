@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* The <body> classes live in nuxt.config.ts, which Tailwind doesn't scan by default. */
+@source "../../../nuxt.config.ts";
+
+/* Dark mode follows the OS setting (Tailwind v4's default `dark:` variant). */
+
+@layer base {
+  a {
+    @apply text-teal-700 dark:text-teal-300 hover:underline;
+  }
+
+  h1 {
+    @apply mb-4 text-3xl font-bold leading-tight md:text-4xl;
+
+    span {
+      @apply font-normal;
+    }
+  }
+
+  h2 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-bold md:text-2xl;
+  }
+
+  h4 {
+    @apply text-xl font-normal;
+  }
+}
+
+@layer components {
+  .nuxt-content {
+    > * + * {
+      @apply mt-6;
+    }
+
+    img {
+      @apply w-full rounded;
+    }
+
+    .video {
+      @apply relative w-full rounded pb-[56.25%];
+
+      iframe {
+        @apply absolute top-0 left-0 w-full h-full;
+      }
+    }
+
+    ol {
+      counter-reset: olItem;
+
+      &::before {
+        counter-increment: olItem;
+        content: counter(olItem) ".";
+        @apply inline-block mr-1;
+      }
+    }
+
+    li {
+      @apply mt-2;
+    }
+
+    blockquote {
+      @apply p-4 italic border-l-8 border-teal-700 dark:border-teal-300;
+    }
+
+    hr {
+      @apply h-px my-10 bg-teal-700 border-0 rounded-full dark:bg-teal-300;
+    }
+
+    .code-block {
+      @apply p-4 my-10 font-mono leading-normal break-normal bg-gray-200 rounded dark:bg-gray-800;
+
+      pre {
+        @apply overflow-auto whitespace-pre;
+        tab-size: 2;
+      }
+    }
+
+    .filename {
+      @apply block mb-4 italic text-gray-500;
+
+      &::before {
+        content: "//";
+        @apply mr-2;
+      }
+    }
+
+    :not(pre) > code {
+      @apply p-1 font-mono break-normal whitespace-normal bg-gray-200 rounded dark:bg-gray-800;
+    }
+
+    /* Shiki emits light colors inline and dark colors as --shiki-dark vars. */
+    .shiki span {
+      @media (prefers-color-scheme: dark) {
+        color: var(--shiki-dark) !important;
+      }
+    }
+  }
+}

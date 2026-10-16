@@ -1,18 +1,17 @@
-import Vue from 'vue';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 
-Vue.filter('formatFullDate', (date) => {
+export function formatFullDate(date?: string) {
   if (!date) {
     return '';
   }
 
   return format(new Date(date), 'MMMM do, y');
-});
+}
 
-Vue.filter('formatYear', (date) => {
+export function formatYear(date?: string) {
   if (!date) {
     return '';
   }
 
   return format(new Date(date), 'y');
-});
+}
