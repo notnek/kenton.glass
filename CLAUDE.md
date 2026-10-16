@@ -36,7 +36,7 @@ Nuxt 4 layout: app code is in `app/`, Nitro server code in `server/`, Markdown/Y
 
 ## Deployment
 
-Netlify builds and hosts the site. Build settings are in the Netlify UI, since there's no `netlify.toml`. `public/_headers` (long-lived cache headers for `/_nuxt/*`) and `public/_redirects` (e.g. `/uses` → the latest setup article) are Netlify config files copied into the build output.
+Netlify builds and hosts the site. Build settings are in the Netlify UI, since there's no `netlify.toml`. On Netlify, Nitro auto-selects the `netlify-static` preset, so `yarn generate` outputs to `dist/` (not `.output/public`): publish directory must be `dist`. The preset also writes cache headers for `/_nuxt/*` into `_headers`, and `@nuxt/image` uses Netlify Image CDN (`/.netlify/images`) instead of prerendered `_ipx` files. `public/_redirects` (e.g. `/uses` → the latest setup article) is copied into the output.
 
 ## Code style
 
